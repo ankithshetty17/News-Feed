@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "364253304301",
+    "project_id": "news-feed-d29f1",
+    "storage_bucket": "news-feed-d29f1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:364253304301:android:1c5ef02eae5031fbf603e4",
+        "android_client_info": {
+          "package_name": "com.example.newsfeed"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDU2Rvoh53pqHUlfnLZM3omRD6MQnNoMu4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

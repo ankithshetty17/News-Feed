@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:newsfeed/pages/login_screen.dart';
+import 'package:newsfeed/pages/newsfeed_screen.dart';
 import 'package:newsfeed/pages/signup_screen.dart';
 
 void main() {
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/signup':(context)=> SignupScreen(),
         '/login':(context) => LoginScreen(),
+        '/newsfeed':(context) => NewsFeed()
       },
     );
   }

@@ -2,9 +2,40 @@ import 'package:flutter/material.dart';
 import 'package:newsfeed/themes/colors.dart';
 import 'package:newsfeed/widgets/custom_button.dart';
 
-class SignupScreen extends StatelessWidget {
+class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
 
+  @override
+  State<SignupScreen> createState() => _SignupScreenState();
+}
+
+class _SignupScreenState extends State<SignupScreen> {
+  final _fromKey = GlobalKey<FormState>();
+  final _nameController = TextEditingController();
+  final _emailController = TextEditingController();
+  bool _isObscured = true;
+
+
+  void _toggleVisibility() {
+    setState(() {
+      _isObscured = !_isObscured;
+    });
+  }
+
+ String? _validateEmail(String? email) {
+  if (email == null || email.isEmpty) {
+    return 'Email cannot be empty';
+  }
+  final RegExp regex = RegExp(
+    r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+    caseSensitive: false,
+    multiLine: false,
+  );
+  if (!regex.hasMatch(email)) {
+    return 'Enter a valid email address';
+  }
+  return null;
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,12 +53,18 @@ class SignupScreen extends StatelessWidget {
       child:
       Column(
         children: [
-       const    Expanded(
+          Expanded(
             child: 
-          Center(child:Column(
+          Center(child:
+          Form(
+            key: _fromKey,
+            child:
+          Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children:[
-          TextField(
+          TextFormField(
+            validator: (name)=> name!.length<3 ? 'Name must be at least 3 characters long' : null,
+            controller: _nameController,
             decoration: InputDecoration(
               filled: true,
               fillColor: Colors.white,
@@ -36,14 +73,19 @@ class SignupScreen extends StatelessWidget {
                 borderSide: BorderSide(color: Colors.transparent),
                 borderRadius: BorderRadius.all(Radius.circular(15))
               ),
+              border: OutlineInputBorder(
+                 borderRadius: BorderRadius.all(Radius.circular(15))
+              ),
               focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.blue),
                 borderRadius: BorderRadius.all(Radius.circular(15))
               )
             ),
+            keyboardType:TextInputType.name,
           ),
         SizedBox(height: 10,),
-           TextField(
+           TextFormField(
+            controller: _emailController,
             decoration: InputDecoration(
               filled: true,
               fillColor: Colors.white,
@@ -52,11 +94,18 @@ class SignupScreen extends StatelessWidget {
                 borderSide: BorderSide(color: Colors.transparent),
                 borderRadius: BorderRadius.all(Radius.circular(15))
               ),
+               border: OutlineInputBorder(
+                 borderRadius: BorderRadius.all(Radius.circular(15))
+               ),
               focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.blue),
                 borderRadius: BorderRadius.all(Radius.circular(15))
               )
+             
             ),
+            keyboardType:TextInputType.emailAddress,
+            validator: _validateEmail,
+            
           ),
             
            SizedBox(height: 10,),
@@ -69,18 +118,33 @@ class SignupScreen extends StatelessWidget {
                 borderSide: BorderSide(color: Colors.transparent),
                 borderRadius: BorderRadius.all(Radius.circular(15))
               ),
+              border: OutlineInputBorder(
+                 borderRadius: BorderRadius.all(Radius.circular(15))
+              ),
               focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.blue),
                 borderRadius: BorderRadius.all(Radius.circular(15))
-              )
+              ),
+                suffixIcon: IconButton(
+            icon: Icon(_isObscured ? Icons.visibility : Icons.visibility_off),
+            onPressed: _toggleVisibility,
+          ),
+          
             ),
+            obscureText: _isObscured,
+            keyboardType:TextInputType.visiblePassword
           ),
             ],
           )
           ),
           ),
+          ),
             
-            const  CustomButton(text: 'Signup'),
+            CustomButton(text: 'Signup',
+            onPressed:(){
+              _fromKey.currentState!.validate();
+            }
+            ,),
             const   SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
