@@ -13,7 +13,7 @@ class NewsFeed extends StatefulWidget {
 class _NewsFeedState extends State<NewsFeed> {
   late Future<List<Article>> futureArticles;
   late  String countrycode = '';
-
+//Function For Fetching RemoteConfig Details From Firebase
     Future<void> fetchRemoteConfig() async {
     final FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.instance;
 
@@ -61,10 +61,10 @@ void dispose() {
         ),
         actions:  [
           Padding(
-            padding: EdgeInsets.only(right: 12),
+            padding: const EdgeInsets.only(right: 12),
             child: Row(
               children: [
-                Icon(
+              const   Icon(
                   Icons.rocket_launch,
                   color: Colors.white,
                 ),
@@ -81,7 +81,7 @@ void dispose() {
         ],
       ),
       body: Padding(
-        padding: EdgeInsets.all(12),
+        padding:const  EdgeInsets.all(12),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -134,7 +134,7 @@ void dispose() {
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 3,
                                     ),
-                                    SizedBox(height: 10,),
+                                   const  SizedBox(height: 10,),
                                     Text(
                                       article.description,
                                       style: Theme.of(context).textTheme.caption,
@@ -144,7 +144,7 @@ void dispose() {
                                   ],
                                 ),
                               ),
-                              SizedBox(width: 10,),
+                            const   SizedBox(width: 10,),
                               if (article.urlToImage.isNotEmpty)
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(12),
@@ -170,6 +170,4 @@ void dispose() {
     );
   }
 }
-
-
 

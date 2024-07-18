@@ -15,15 +15,14 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-
   bool _isObscured = true;
-
+// Toggle Iocn For Password
   void _toggleVisibility() {
     setState(() {
       _isObscured = !_isObscured;
     });
   }
-
+//Function For Validation Of Email
   String? _validateEmail(String? email) {
     if (email == null || email.isEmpty) {
       return 'Email cannot be empty';
@@ -70,7 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
       backgroundColor: bodybg,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text(
+        title:const  Text(
           'MyNews',
           style: TextStyle(
             color: Color.fromARGB(255, 12, 84, 190),
@@ -81,7 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
         backgroundColor: Colors.transparent,
       ),
       body: Padding(
-        padding: EdgeInsets.all(12),
+        padding:const  EdgeInsets.all(12),
         child: Column(
           children: [
             Expanded(
@@ -91,10 +90,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SizedBox(height: 10),
+                    const   SizedBox(height: 10),
                       TextFormField(
                         controller: _emailController,
-                        decoration: InputDecoration(
+                        decoration:const  InputDecoration(
                           filled: true,
                           fillColor: Colors.white,
                           hintText: 'E-mail',
@@ -116,7 +115,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         keyboardType: TextInputType.emailAddress,
                         validator: _validateEmail,
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       TextFormField(
                         validator: (password) => password!.length < 5
                             ? 'Password must be at least 5 characters long'
@@ -126,16 +125,16 @@ class _LoginScreenState extends State<LoginScreen> {
                           filled: true,
                           fillColor: Colors.white,
                           hintText: 'Password',
-                          enabledBorder: OutlineInputBorder(
+                          enabledBorder:const  OutlineInputBorder(
                             borderSide:
                                 BorderSide(color: Colors.transparent),
                             borderRadius:
                                 BorderRadius.all(Radius.circular(15)),
                           ),
-                          border: OutlineInputBorder(
+                          border:const  OutlineInputBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(15))),
-                          focusedBorder: OutlineInputBorder(
+                          focusedBorder:const  OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.blue),
                             borderRadius:
                                 BorderRadius.all(Radius.circular(15)),
@@ -161,16 +160,16 @@ class _LoginScreenState extends State<LoginScreen> {
                 _loginUser();
               },
             ),
-            SizedBox(height: 10),
+          const   SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('New here?'),
+               const  Text('New here?'),
                 GestureDetector(
                   onTap: () {
                     Navigator.pushNamed(context, '/signup');
                   },
-                  child: Text(
+                  child:const  Text(
                     'Signup',
                     style: TextStyle(
                       color: Colors.blue,

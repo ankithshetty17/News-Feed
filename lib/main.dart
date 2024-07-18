@@ -17,7 +17,8 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return   
+    MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
@@ -27,8 +28,8 @@ class MyApp extends StatelessWidget {
       home: SignupScreen(),
       routes: {
         '/signup':(context)=> SignupScreen(),
-        '/login':(context) => LoginScreen(),
-        '/newsfeed':(context) => NewsFeed()
+        '/login':(context) =>const  LoginScreen(),
+        '/newsfeed':(context) =>const  NewsFeed()
       },
     );
   }
