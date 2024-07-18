@@ -1,21 +1,76 @@
 import 'package:flutter/material.dart';
 import 'package:newsfeed/themes/colors.dart';
 import 'package:newsfeed/widgets/custom_button.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SignupScreen extends StatefulWidget {
-  const SignupScreen({super.key});
+ SignupScreen({super.key});
 
   @override
   State<SignupScreen> createState() => _SignupScreenState();
 }
 
 class _SignupScreenState extends State<SignupScreen> {
-  final _fromKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
+  final _passwordController= TextEditingController();
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+Future<void> _registerUser() async {
+    if (_formKey.currentState!.validate()) {
+      try {
+      
+        // Create user with email and password
+        UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: _emailController.text,
+          password: _passwordController.text,
+        );
+
+        // Save additional user details in Firestore
+        await FirebaseFirestore.instance.collection('users').doc(userCredential.user!.uid).set({
+          'name': _nameController.text,
+          'email': _emailController.text,
+          'password': _passwordController.text,
+        });
+
+        // Show a confirmation message
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('User registered successfully')),
+        );
+         Navigator.pushNamed(context, '/newsfeed');
+        // Clear the form
+        _nameController.clear();
+        _emailController.clear();
+        _passwordController.clear();
+      } on FirebaseAuthException catch (e) {
+        String message = 'An error occurred';
+        if (e.code == 'weak-password') {
+          message = 'The password provided is too weak.';
+        } else if (e.code == 'email-already-in-use') {
+          message = 'The account already exists for that email.';
+        } else if (e.code == 'invalid-email') {
+          message = 'The email address is not valid.';
+        }
+
+        // Show error message
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(message)),
+        );
+      }
+    }
+  }
+
+
   bool _isObscured = true;
-
-
   void _toggleVisibility() {
     setState(() {
       _isObscured = !_isObscured;
@@ -42,14 +97,14 @@ class _SignupScreenState extends State<SignupScreen> {
       backgroundColor: bodybg,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title:const  Text('MyNews',
+        title: Text('MyNews',
                      style: TextStyle(color: Color.fromARGB(255,12, 84, 190),
                     fontWeight: FontWeight.bold),
                     ),
         elevation: 0,
         backgroundColor: Colors.transparent,
       ),
-      body: Padding(padding:const  EdgeInsets.all(12),
+      body: Padding(padding:  EdgeInsets.all(12),
       child:
       Column(
         children: [
@@ -57,7 +112,7 @@ class _SignupScreenState extends State<SignupScreen> {
             child: 
           Center(child:
           Form(
-            key: _fromKey,
+            key: _formKey,
             child:
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -109,7 +164,9 @@ class _SignupScreenState extends State<SignupScreen> {
           ),
             
            SizedBox(height: 10,),
-           TextField(
+           TextFormField(
+            validator: (password)=> password!.length<5 ? 'Password must be at least 5 characters long' : null,
+            controller: _passwordController,
             decoration: InputDecoration(
               filled: true,
               fillColor: Colors.white,
@@ -121,6 +178,7 @@ class _SignupScreenState extends State<SignupScreen> {
               border: OutlineInputBorder(
                  borderRadius: BorderRadius.all(Radius.circular(15))
               ),
+            
               focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.blue),
                 borderRadius: BorderRadius.all(Radius.circular(15))
@@ -142,20 +200,22 @@ class _SignupScreenState extends State<SignupScreen> {
             
             CustomButton(text: 'Signup',
             onPressed:(){
-              _fromKey.currentState!.validate();
+              print('pressed');
+              _formKey.currentState!.validate();
+              _registerUser();
             }
             ,),
-            const   SizedBox(height: 10),
+              SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text('Alredy have an account?'),
+                  Text('Alredy have an account?'),
                   GestureDetector(
                     onTap:(){
                     Navigator.pushNamed(context, '/login');
                     },
                     child:
-                const   Text('Login',
+                 Text('Login',
                   style: TextStyle(color: Colors.blue,fontWeight: FontWeight.bold),
                   ),
                   ),
