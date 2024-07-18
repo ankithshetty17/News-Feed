@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:newsfeed/themes/colors.dart';
 import 'package:newsfeed/widgets/custom_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:newsfeed/widgets/snack_bar.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -50,17 +51,15 @@ class _LoginScreenState extends State<LoginScreen> {
         // Navigate to next page after successful login
         Navigator.pushNamed(context, '/newsfeed');
       } on FirebaseAuthException catch (e) {
-        String message = 'An error occurred';
+        ShowSnackBar(context, 'Wrong E-mail Or Password');
         if (e.code == 'user-not-found') {
-          message = 'No user found for that email.';
+          // message = 'No user found for that email.';
         } else if (e.code == 'wrong-password') {
-          message = 'Wrong password provided for that user.';
+          ShowSnackBar(context, 'Wrong E-mail Or Password');
         }
 
         // Show error message
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(message)),
-        );
+        // ShowSnackBar(context, 'Wrong E-mail Or Password');
       }
     }
   }

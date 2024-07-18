@@ -3,6 +3,7 @@ import 'package:newsfeed/themes/colors.dart';
 import 'package:newsfeed/widgets/custom_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:newsfeed/widgets/snack_bar.dart';
 
 class SignupScreen extends StatefulWidget {
  SignupScreen({super.key});
@@ -43,28 +44,24 @@ Future<void> _registerUser() async {
         });
 
         // Show a confirmation message
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('User registered successfully')),
-        );
+        ShowSnackBar(context, 'User Registered Successfully');
          Navigator.pushNamed(context, '/newsfeed');
         // Clear the form
         _nameController.clear();
         _emailController.clear();
         _passwordController.clear();
       } on FirebaseAuthException catch (e) {
-        String message = 'An error occurred';
+        ShowSnackBar(context, 'User Already Exist');
         if (e.code == 'weak-password') {
-          message = 'The password provided is too weak.';
+          ShowSnackBar(context, 'The Password Provided Is Too Weak.');
         } else if (e.code == 'email-already-in-use') {
-          message = 'The account already exists for that email.';
+        //  ShowSnackBar(context, 'The account already exists for that email.');
         } else if (e.code == 'invalid-email') {
-          message = 'The email address is not valid.';
+          ShowSnackBar(context, 'The E-mail Is Invalid.');
         }
 
         // Show error message
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(message)),
-        );
+        } catch (e) {
       }
     }
   }

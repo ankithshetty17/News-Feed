@@ -1,3 +1,4 @@
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:newsfeed/models/news_model.dart';
 import 'package:newsfeed/themes/colors.dart';
@@ -11,12 +12,37 @@ class NewsFeed extends StatefulWidget {
 
 class _NewsFeedState extends State<NewsFeed> {
   late Future<List<Article>> futureArticles;
+  late  String countrycode = '';
+
+    Future<void> fetchRemoteConfig() async {
+    final FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.instance;
+
+    try {
+      await remoteConfig.fetch();
+      await  await remoteConfig.fetchAndActivate();
+
+      setState(() {
+        countrycode = remoteConfig.getString('countrycode');
+        futureArticles = NewsService(countryCode: countrycode).fetchTopHeadlines();
+      });
+    } catch (e) {
+      print('Error fetching remote config: $e');
+    }
+  }
+
 
   @override
   void initState() {
     super.initState();
-    futureArticles = NewsService().fetchTopHeadlines();
+    fetchRemoteConfig();
+    futureArticles = NewsService(countryCode: countrycode).fetchTopHeadlines();
   }
+
+  @override
+void dispose() {
+  // Clean up resources here, if needed
+  super.dispose();
+}
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +59,7 @@ class _NewsFeedState extends State<NewsFeed> {
             color: Colors.white,
           ),
         ),
-        actions: const [
+        actions:  [
           Padding(
             padding: EdgeInsets.only(right: 12),
             child: Row(
@@ -43,8 +69,8 @@ class _NewsFeedState extends State<NewsFeed> {
                   color: Colors.white,
                 ),
                 Text(
-                  'IN',
-                  style: TextStyle(
+                  countrycode.isNotEmpty ? countrycode : 'IN',
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
@@ -144,3 +170,6 @@ class _NewsFeedState extends State<NewsFeed> {
     );
   }
 }
+
+
+
