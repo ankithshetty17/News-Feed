@@ -95,7 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         controller: _emailController,
                         decoration:const  InputDecoration(
                           filled: true,
-                          fillColor: Colors.white,
+                          // fillColor: Colors.white,
                           hintText: 'E-mail',
                           enabledBorder: OutlineInputBorder(
                             borderSide:
@@ -123,7 +123,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         controller: _passwordController,
                         decoration: InputDecoration(
                           filled: true,
-                          fillColor: Colors.white,
+                          // fillColor: Colors.white,
                           hintText: 'Password',
                           enabledBorder:const  OutlineInputBorder(
                             borderSide:

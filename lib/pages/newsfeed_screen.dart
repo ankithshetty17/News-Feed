@@ -1,7 +1,10 @@
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:newsfeed/models/news_model.dart';
+import 'package:newsfeed/pages/news_details.dart';
 import 'package:newsfeed/themes/colors.dart';
+import 'package:newsfeed/themes/theme_provider.dart';
+import 'package:provider/provider.dart';
 
 class NewsFeed extends StatefulWidget {
   const NewsFeed({super.key});
@@ -47,11 +50,11 @@ void dispose() {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: bodybg,
+      // backgroundColor: bodybg,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         elevation: 0,
-        backgroundColor: const Color.fromARGB(255, 12, 84, 190),
+         backgroundColor: Theme.of(context).colorScheme.background,
         title: const Text(
           'My News',
           style: TextStyle(
@@ -62,21 +65,10 @@ void dispose() {
         actions:  [
           Padding(
             padding: const EdgeInsets.only(right: 12),
-            child: Row(
-              children: [
-              const   Icon(
-                  Icons.rocket_launch,
-                  color: Colors.white,
-                ),
-                Text(
-                  countrycode.isNotEmpty ? countrycode : 'IN',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-              ],
-            ),
+            child:IconButton(onPressed: (){
+              Provider.of<ThemeProvider>(context,listen: false).toggleTheme();
+            },
+             icon: Icon(Icons.sunny,color: Theme.of(context).colorScheme.primary),)
           ),
         ],
       ),
@@ -112,10 +104,19 @@ void dispose() {
                       itemCount: snapshot.data!.length,
                       itemBuilder: (context, index) {
                         final article = snapshot.data![index];
-                        return Container(
+                        return  GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => NewsDetailPage(article: article),
+                              ),
+                            );
+                          },
+                      child:   Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12),
-                            color: Colors.white,
+                            border: Border.all(color:Theme.of(context).colorScheme.primary)
                           ),
                           margin: const EdgeInsets.all(8.0),
                           padding: const EdgeInsets.all(12),
@@ -157,6 +158,7 @@ void dispose() {
                                 ),
                             ],
                           ),
+                      ),
                         );
                       },
                     );

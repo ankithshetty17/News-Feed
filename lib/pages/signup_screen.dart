@@ -113,7 +113,7 @@ Future<void> _registerUser() async {
             controller: _nameController,
             decoration:const  InputDecoration(
               filled: true,
-              fillColor: Colors.white,
+              // fillColor: Colors.white,
               hintText: 'Name',
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.transparent),
@@ -134,7 +134,7 @@ Future<void> _registerUser() async {
             controller: _emailController,
             decoration:const InputDecoration(
               filled: true,
-              fillColor: Colors.white,
+              // fillColor: Colors.white,
               hintText: 'E-mail',
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.transparent),
@@ -160,7 +160,7 @@ Future<void> _registerUser() async {
             controller: _passwordController,
             decoration: InputDecoration(
               filled: true,
-              fillColor: Colors.white,
+              // fillColor: Colors.white,
               hintText: 'Password',
               enabledBorder:const  OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.transparent),
